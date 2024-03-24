@@ -1,6 +1,10 @@
+import FileUpload from "@/Components/FileUpload"
+
 const Upload = () => {
   return (
-    <div className="text-white">Upload files</div>
+    <>
+    <FileUpload />
+    </>
   )
 }
 

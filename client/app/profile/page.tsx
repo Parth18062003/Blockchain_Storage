@@ -5,7 +5,7 @@ const ProfilePage = () => {
   return (
     <>
     <Header />
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center bg-customwhite dark:bg-customblack">
         <UserProfile/>
       </div>
     </>
