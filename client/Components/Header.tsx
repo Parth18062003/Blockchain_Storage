@@ -11,7 +11,6 @@ import Toggle from "./ui/Toggle";
 import { useTheme } from "next-themes";
 import { UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/nextjs";
-import { DiVim } from "react-icons/di";
 
 export const Header = () => {
   const { theme } = useTheme();
