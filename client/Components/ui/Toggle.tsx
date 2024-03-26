@@ -1,6 +1,6 @@
 import { m } from "framer-motion";
 import { useTheme } from "next-themes";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TbSunLow, TbMoon } from "react-icons/tb";
 
 const TOGGLE_CLASSES =
@@ -9,7 +9,12 @@ const TOGGLE_CLASSES =
 type ToggleOptionsType = "light" | "dark";
 
 const Toggle = () => {
+  const { resolvedTheme } = useTheme();
   const [selected, setSelected] = useState<ToggleOptionsType>("dark");
+
+  useEffect(() => {
+    setSelected(resolvedTheme === "light" ? "light" : "dark");
+  }, [resolvedTheme]);
   return (
     <div className="grid place-content-center px-4 transition-colors">
       <SliderToggle selected={selected} setSelected={setSelected} />

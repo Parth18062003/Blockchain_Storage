@@ -73,9 +73,8 @@ export const Header = () => {
           </Link>
         </div>
         <Toggle />
-        {!isLoaded || !userId ? (
+        {!userId ? (
           <>
-            {" "}
             <Link
               href="/sign-in"
               className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block"
