@@ -23,7 +23,7 @@ const EthImage = () => {
         animate={controls}
         style={{ zIndex: 1 }}
       >
-        <Image src={ethleft} width={700} height={700} alt="Hero" fetchPriority="high"/>
+        <Image src={ethleft} width={700} height={700} alt="Hero" priority={true}/>
       </motion.div>
     </div>
   );

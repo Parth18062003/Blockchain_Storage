@@ -1,4 +1,3 @@
-import { cn } from "@/utils/cn";
 import React from "react";
 import { BentoGrid, BentoGridItem } from "./ui/BentoGrid";
 
@@ -20,7 +19,8 @@ export function BentoGridDemo() {
   );
 }
 const Skeleton = () => (
-  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br dark:from-neutral-200 from-neutral-900 to-neutral-800 dark:to-neutral-100"></div>
+  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br dark:from-neutral-200 from-neutral-900 to-neutral-800 dark:to-neutral-100">
+  </div>
 );
 const items = [
   {

@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Header } from "@/Components/Header";
+import Footer from "@/Components/Footer";
 
 const roboto = Roboto({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -20,15 +21,17 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-    appearance={{
-      baseTheme: dark
-    }}
+      appearance={{
+        baseTheme: dark,
+      }}
     >
       <html lang="en">
         <body className={roboto.className}>
           <Providers>
             <Header />
-            {children}</Providers>
+            {children}
+            <Footer />
+          </Providers>
         </body>
       </html>
     </ClerkProvider>
