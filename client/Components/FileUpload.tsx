@@ -4,13 +4,15 @@ import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import { TbFolderCancel } from "react-icons/tb";
+import { IoMdCloudUpload } from "react-icons/io";
+import { Loader } from "./Loader";
 
-const JWT = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI3YWI1N2QxZC0xMTVhLTQ0MWQtYmIxZi0zNDk1OWI5NDdhZGQiLCJlbWFpbCI6IjIwMjEucGFydGgua2FkYW1AdmVzLmFjLmluIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjdjMDVlOWM0YzcxYjM4ZjAwMGY0Iiwic2NvcGVkS2V5U2VjcmV0IjoiYWMxNDliYjUyODI4YjdmYjg0NWJlZGM5ZjEzZWJlODAyNDA3ZGM0NWY4YjA0OWQ2NTNjYjdiMmJjZjdlY2JiYiIsImlhdCI6MTY5NDkzMDE2NH0.y9NzNNfji-NUURYSjplHi3Y1IzWooOUqBW8JZ5iIUyE`;
+const JWT = process.env.NEXT_PUBLIC_PINATA_JWT;
 
 const FileUpload = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
-
+  const [loading, setLoading] = useState<boolean>(false);
   const { userId } = useAuth();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +78,7 @@ const FileUpload = () => {
 
   const handleSubmission = async () => {
     try {
+      setLoading(true);
       // Iterate over each uploaded file
       for (const file of uploadedFiles) {
         // Create a new FormData object for each file
@@ -84,6 +87,14 @@ const FileUpload = () => {
         // Append the file to the FormData object
         formData.append("file", file);
 
+        const filemetadata = {
+          userId: userId,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+        };
+
+        formData.append("filemetadata", JSON.stringify(filemetadata));
         // Create metadata for the file
         const metadata = JSON.stringify({
           name: file.name,
@@ -112,8 +123,16 @@ const FileUpload = () => {
           }
         );
 
+        await axios.post("http://localhost:4321/upload", {
+          ipfsHash: response.data.IpfsHash,
+          filemetadata: filemetadata,
+        });
+        //console.log("meta", filemetadata);
         // Log the IPFS hash for the uploaded file
-        console.log(`File ${file.name} IPFS hash: ${response.data.IpfsHash}`);
+        //console.log(`File ${file.name} IPFS hash: ${response.data.IpfsHash}`);
+        console.log("response", response);
+        setUploadedFiles([]);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -145,6 +164,16 @@ const FileUpload = () => {
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
+    } else if (
+      file.type ===
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(file);
+      downloadLink.download = file.name;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
     }
     // Add handling for other file types if needed
   };
@@ -156,12 +185,11 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="h-[90vh] flex flex-col justify-center items-center bg-customwhite dark:bg-customblack dark:bg-dot-white/[0.2] bg-dot-black/[0.2]">
+    <div className="h-[100vh] flex flex-col justify-center items-center bg-customwhite dark:bg-customblack dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-customblack bg-customwhite [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-      <p>Select maximum 5 files of not more than 10mb each</p>
       <label
         htmlFor="file-upload"
-        className="relative bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100 border-2 border-dashed dark:border-gray-300 border-gray-600 rounded-lg p-20 cursor-pointer"
+        className="relative bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100 border-2 border-dashed dark:border-gray-300 border-gray-600 rounded-lg p-20 cursor-pointer flex flex-col items-center justify-center"
       >
         <input
           id="file-upload"
@@ -170,76 +198,97 @@ const FileUpload = () => {
           multiple
           onChange={handleFileChange}
         />
-        <span className="block text-center dark:text-gray-400 text-gray-700">
+        <IoMdCloudUpload className="text-6xl text-gray-600 dark:text-gray-400" />
+        <span className="block text-center text-xl dark:text-gray-400 text-gray-700">
           Drag and drop or select files
         </span>
-      </label>
-      <button
-        onClick={handleSubmission}
-        className="mt-3  relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-      >
-        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-xl font-medium text-white backdrop-blur-3xl">
-          Upload files
+        <span className="block text-center text-base dark:text-gray-600 text-gray-400 mt-4">
+          Select maximum 5 files of not more than 10mb each
         </span>
-      </button>
+      </label>
+
       {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
-      {uploadedFiles && uploadedFiles.length > 0 ? (
-        <>
-          {" "}
-          <div className="mt-4 z-10">
-            <table className="w-full table-auto">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2">Preview</th>
-                  <th className="px-4 py-2">Name</th>
-                  <th className="px-4 py-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {uploadedFiles.map((file, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="px-4 py-2">
-                      {file.type.startsWith("image/") ? (
-                        <Image
-                          src={URL.createObjectURL(file)}
-                          alt={`Preview ${file.name} ${index}`}
-                          height={300}
-                          width={300}
-                          className="h-full w-[15rem]"
-                        />
-                      ) : (
-                        <div className="p-[3px] relative">
-                          <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg h-10 w-10" />
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-4 py-2">{file.name}</td>
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() => handlePreview(file)}
-                        className="p-[3px] relative"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                        <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
-                          preview
-                        </div>
-                      </button>
-                      <button
-                        onClick={() => handleCancel(file)}
-                        className="ml-3 mt-4 px-3 py-2 rounded-full bg-gradient-to-b from-red-500 to-red-600 text-white text-xl focus:ring-2 focus:ring-red-400 hover:shadow-xl transition duration-200"
-                      >
-                        <TbFolderCancel />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+      {loading ? (
+        <div className="mt-3">
+          <Loader />
+        </div>
       ) : (
-        <></>
+        <>
+          <button
+            onClick={handleSubmission}
+            className="mt-3 relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+          >
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-xl font-medium text-white backdrop-blur-3xl">
+              Upload files
+            </span>
+          </button>
+          {uploadedFiles && uploadedFiles.length > 0 ? (
+            <>
+              <div className="mt-4 z-0 overflow-auto">
+                <table className="w-full table-auto">
+                  <thead>
+                    <tr>
+                      <th className="px-4 py-2">Preview</th>
+                      <th className="px-4 py-2">Name</th>
+                      <th className="px-4 py-2">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {uploadedFiles.map((file, index) => (
+                      <tr key={index} className="border-b">
+                        <td className="px-4 py-2">
+                          {file.type.startsWith("image/") ? (
+                            <Image
+                              src={URL.createObjectURL(file)}
+                              alt={`Preview ${file.name} ${index}`}
+                              height={300}
+                              width={300}
+                              className="h-full w-[15rem]"
+                            />
+                          ) : (
+                            <div className="p-[3px] relative">
+                              <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg h-10 w-10" />
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 max-w-[9rem] sm:max-w-[15rem] truncate">
+                          {file.name}
+                        </td>
+                        <td className="px-4 py-2">
+                          {file.type.startsWith("image/") ? (
+                            <></>
+                          ) : (
+                            <>
+                              {" "}
+                              <button
+                                onClick={() => handlePreview(file)}
+                                className="p-[3px] relative"
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                                <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
+                                  preview
+                                </div>
+                              </button>
+                            </>
+                          )}
+                          <button
+                            onClick={() => handleCancel(file)}
+                            className="ml-3 mt-4 px-3 py-2 rounded-full bg-gradient-to-b from-red-500 to-red-600 text-white text-xl focus:ring-2 focus:ring-red-400 hover:shadow-xl transition duration-200"
+                          >
+                            <TbFolderCancel />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </>
       )}
     </div>
   );

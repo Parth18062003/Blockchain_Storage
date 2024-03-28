@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <>
       <WavyBackground className="mx-auto">
-        <h1 className={`translate-y-28 sm:translate-y-60 text-5xl md:text-8xl lg:text-[12.5rem] text-black dark:text-white font-bold inter-var text-center ${!userId ? "translate-y-28 sm:translate-y-60" : "translate-y-14 sm:translate-y-40"}`}>
+        <h1 className={`translate-y-28 sm:translate-y-60 text-5xl md:text-8xl lg:text-[12.5rem] text-black dark:text-white font-bold inter-var text-center ${!userId ? "translate-y-28 sm:translate-y-60" : "translate-y-12 sm:translate-y-40"}`}>
           Blockchain is cool
         </h1>
         {!userId ? (
