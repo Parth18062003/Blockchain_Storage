@@ -78,6 +78,10 @@ const FileUpload = () => {
 
   const handleSubmission = async () => {
     try {
+      if (uploadedFiles.length === 0) {
+        setErrorMessage("Please select at least one file.");
+        return;
+      }
       setLoading(true);
       // Iterate over each uploaded file
       for (const file of uploadedFiles) {
@@ -260,7 +264,6 @@ const FileUpload = () => {
                             <></>
                           ) : (
                             <>
-                              {" "}
                               <button
                                 onClick={() => handlePreview(file)}
                                 className="p-[3px] relative"
