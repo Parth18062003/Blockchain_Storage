@@ -1,0 +1,163 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "ipfsHash",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "userId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "fileName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "fileType",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fileSize",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "FileDeleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "ipfsHash",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "userId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "fileName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "fileType",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fileSize",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "FileStored",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "ipfsHash", "type": "string" }
+    ],
+    "name": "deleteFile",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "", "type": "string" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "filesByUserId",
+    "outputs": [
+      { "internalType": "string", "name": "userId", "type": "string" },
+      { "internalType": "string", "name": "fileName", "type": "string" },
+      { "internalType": "string", "name": "fileType", "type": "string" },
+      { "internalType": "uint256", "name": "fileSize", "type": "uint256" },
+      { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+      { "internalType": "bool", "name": "deleted", "type": "bool" },
+      { "internalType": "string", "name": "ipfsHash", "type": "string" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "userId", "type": "string" }
+    ],
+    "name": "getFileByUserId",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "userId", "type": "string" },
+          { "internalType": "string", "name": "fileName", "type": "string" },
+          { "internalType": "string", "name": "fileType", "type": "string" },
+          { "internalType": "uint256", "name": "fileSize", "type": "uint256" },
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+          { "internalType": "bool", "name": "deleted", "type": "bool" },
+          { "internalType": "string", "name": "ipfsHash", "type": "string" }
+        ],
+        "internalType": "struct FileStorageContract.File[]",
+        "name": "",
+        "type": "tuple[]"
+      },
+      { "internalType": "string[]", "name": "", "type": "string[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "name": "ipfsHashExists",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string[]", "name": "ipfsHashes", "type": "string[]" },
+      { "internalType": "string[]", "name": "userIds", "type": "string[]" },
+      { "internalType": "string[]", "name": "fileNames", "type": "string[]" },
+      { "internalType": "string[]", "name": "fileTypes", "type": "string[]" },
+      { "internalType": "uint256[]", "name": "fileSizes", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "timestamps", "type": "uint256[]" }
+    ],
+    "name": "storeFiles",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
+
+
