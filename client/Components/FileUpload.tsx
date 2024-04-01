@@ -140,6 +140,7 @@ const FileUpload = () => {
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 

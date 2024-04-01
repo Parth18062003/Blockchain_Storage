@@ -27,22 +27,22 @@ export const Header = () => {
   const navItems = [
     {
       name: "Home",
-      link: "Hero",
+      link: "",
       duration: 500,
     },
     {
-      name: "About",
-      link: "About",
+      name: "Profile",
+      link: "profile",
       duration: 1500,
     },
     {
-      name: "Skills",
-      link: "Skills",
+      name: "Upload Files",
+      link: "upload",
       duration: 2000,
     },
     {
-      name: "Projects",
-      link: "Project",
+      name: "My Files",
+      link: "my-files",
       duration: 2500,
     },
   ];
@@ -149,7 +149,7 @@ export const Header = () => {
                     toggleMenu();
                   }}
                 >
-                  <Link href={`#${navItem.link}`}>
+                  <Link href={`/${navItem.link}`}>
                     <span>{navItem.name}</span>
                   </Link>
                 </li>
