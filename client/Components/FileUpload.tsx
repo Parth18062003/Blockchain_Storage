@@ -13,6 +13,7 @@ const FileUpload = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const { userId } = useAuth();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,8 +73,21 @@ const FileUpload = () => {
       limitedFiles.forEach((file) => {
         console.log(getFileType(file.name));
       });
+
+      const defaultFileNames = limitedFiles.map((file) => file.name);
+      setFileNames(defaultFileNames);
+
       setErrorMessage(""); // Clear error message if no error
     }
+  };
+
+  const handleFileNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const newFileNames = [...fileNames];
+    newFileNames[index] = e.target.value;
+    setFileNames(newFileNames);
   };
 
   const handleSubmission = async () => {
@@ -84,8 +98,10 @@ const FileUpload = () => {
       }
       setLoading(true);
       // Iterate over each uploaded file
-      for (const file of uploadedFiles) {
+      for (let i = 0; i < uploadedFiles.length; i++) {
         // Create a new FormData object for each file
+        const file = uploadedFiles[i];
+        const fileName = fileNames[i] || file.name;
         const formData = new FormData();
 
         // Append the file to the FormData object
@@ -93,7 +109,7 @@ const FileUpload = () => {
 
         const filemetadata = {
           userId: userId,
-          name: file.name,
+          name: fileName,
           size: file.size,
           type: file.type,
         };
@@ -258,7 +274,13 @@ const FileUpload = () => {
                           )}
                         </td>
                         <td className="px-4 py-2 max-w-[9rem] sm:max-w-[15rem] truncate">
-                          {file.name}
+                          <input
+                            type="text"
+                            value={fileNames[index]}
+                            onChange={(e) => handleFileNameChange(e, index)}
+                            className="w-full px-2 py-1 border border-slate-950 dark:border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Enter file name"
+                          />
                         </td>
                         <td className="px-4 py-2">
                           {file.type.startsWith("image/") ? (
