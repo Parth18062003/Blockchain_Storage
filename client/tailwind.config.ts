@@ -9,7 +9,7 @@ const {
 const config: Config = {
   purge: {
     enabled: false,
-  }
+  },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
