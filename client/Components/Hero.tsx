@@ -2,12 +2,12 @@
 import React from "react";
 import { WavyBackground } from "./ui/WavyBackground";
 import EthImage from "./ui/EthImage";
-import About from "./About";
+import About from "../Components/About";
 import GithubGlobe from "./GithubGlobe";
 import { HoverBorderGradient } from "./ui/CTAButton";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { Cards } from "./Cards";
+import Cards from "./Cards";
 
 export function Hero() {
   const { userId } = useAuth();

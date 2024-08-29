@@ -1,10 +1,12 @@
-import React from 'react'
-import MyFiles from '../../Components/MyFiles'
+import React from "react";
+import MyFiles from "../../Components/MyFiles";
 
 const page = () => {
   return (
-    <><MyFiles /></>
-  )
-}
+    <div className="bg-customwhite dark:bg-customblack">
+      <MyFiles />
+    </div>
+  );
+};
 
-export default page
+export default page;

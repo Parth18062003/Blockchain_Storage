@@ -1,5 +1,5 @@
 import React from "react";
-import { BentoGridDemo } from "./Bento";
+import { BentoGridDemo } from "../Components/Bento";
 
 const About = () => {
   return (
@@ -28,8 +28,6 @@ const About = () => {
       <div className="min-h-screen bg-customblack dark:bg-[#fffafa] py-16">
         <BentoGridDemo />
       </div>
-
-
 
       <div className="mx-auto w-full px-6 sm:max-w-[40rem] md:max-w-[48rem] md:px-8 lg:max-w-[64rem] xl:max-w-[80rem]">
         <div className="relative -mx-2.5 flex -bottom-1 -mt-12">

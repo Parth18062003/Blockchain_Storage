@@ -100,7 +100,7 @@ const MyFiles = () => {
     setShowSortOptions((prev) => !prev);
   };
   return (
-    <div className="bg-customwhite dark:bg-customblack min-h-screen">
+    <div className="bg-customwhite dark:bg-customblack min-h-screen translate-y-10">
       <div className="flex flex-col px-8">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
           <div className="mb-2 sm:mb-0">

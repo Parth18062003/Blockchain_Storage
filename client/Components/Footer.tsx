@@ -10,12 +10,8 @@ const Footer = () => {
   const { userId } = useAuth();
   return (
     <>
-      <footer className="bg-gray-200 dark:bg-neutral-950 ">
+      <footer className="bg-customwhite dark:bg-neutral-950">
         <div className="mx-auto max-w-3xl py-8">
-          <div className="flex justify-center">
-            <h3 className="text-black dark:text-white text-3xl">Parth Kadam</h3>
-          </div>
-
           <ul className="translate-y-6 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
             <li>
               <Link

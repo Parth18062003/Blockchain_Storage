@@ -49,7 +49,7 @@ export const Header = () => {
 
   return (
     <>
-      <nav className="hidden lg:flex flex-row items-center justify-between py-8 mx-auto px-12 w-full relative bg-customwhite dark:bg-customblack z-20">
+      <nav className="hidden lg:flex flex-row items-center justify-between py-6 mx-auto px-12 w-full bg-customwhite dark:bg-transparent sticky top-0 z-50 backdrop-filter bg-gradient-to-br dark:from-white/20 dark:to-white/5 from-black/20 to-black/5 backdrop-blur bg-opacity-90 border border-gray-900 dark:border-gray-700 ">
         <div className="flex flex-row justify-between items-center space-x-1">
           <Link
             href="#Hero"
@@ -62,7 +62,7 @@ export const Header = () => {
           <Link href="/">
             <span>Home</span>
           </Link>
-          <Link href={!userId ? "/sign-in" : "/profile"}>
+          <Link href={!userId ? "/sign-in" : "/user-profile"}>
             <span>Profile</span>
           </Link>
           <Link href={!userId ? "/sign-in" : "/upload"}>

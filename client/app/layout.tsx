@@ -20,13 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark,
-      }}
-    >
+    <ClerkProvider >
       <html lang="en" suppressHydrationWarning>
-        <body className={roboto.className}>
+        <body className={`bg-customwhite dark:bg-customblack ${roboto.className}`}>
           <Providers>
             <Header />
             {children}

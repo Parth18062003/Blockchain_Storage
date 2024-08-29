@@ -40,8 +40,8 @@ const FilesGrid: React.FC<FilesTableProps> = ({ files }) => {
   };
 
   return (
-<div className="mt-4 px-8 flex-grow">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+<div className="my-4 px-8 flex-grow">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {files.map((file, index) => (
           <div key={index} className="border rounded-md overflow-hidden">
             {file.fileType.startsWith("image/") ? (
